@@ -1,10 +1,9 @@
 class Animal
-  attr_reader :name, :gender, :admit_date, :type, :breed, :id, :owner_id
+  attr_reader :name, :gender, :type, :breed, :id, :owner_id
 
   def initialize(attributes)
       @name = attributes[:name]
       @gender = attributes[:gender]
-      @admit_date = attributes[:admit_date]
       @type = attributes[:type]
       @breed = attributes[:breed]
       @id = attributes[:id]
@@ -17,18 +16,17 @@ class Animal
     returned_animals.each() do |animal|
       name = animal.fetch("name")
       gender = animal.fetch("gender")
-      admit_date = animal.fetch("admit_date")
       type = animal.fetch("type")
       breed = animal.fetch("breed")
       id = animal.fetch("id").to_i()
       owner_id = animal.fetch("owner_id").to_i()
-      animals.push(Animal.new({:name => name, :gender => gender, :admit_date => admit_date, :type => type, :breed => breed, :id => id, :owner_id => owner_id}))
+      animals.push(Animal.new({:name => name, :gender => gender, :type => type, :breed => breed, :id => id, :owner_id => owner_id}))
     end
     animals
   end
 
   def save
-    result = DB.exec("INSERT INTO animal (name, gender, admit_date, type, breed, owner_id) VALUES ('#{@name}', '#{@gender}', '#{@admit_date}', '#{@type}', '#{@breed}', '#{@owner_id}') RETURNING id;")
+    result = DB.exec("INSERT INTO animal (name, gender, type, breed, owner_id) VALUES ('#{@name}', '#{@gender}', '#{@type}', '#{@breed}', #{@owner_id}) RETURNING id;")
     @id = result.first().fetch("id").to_i()
   end
 

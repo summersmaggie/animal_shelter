@@ -1,9 +1,8 @@
 class Customer
-  attr_reader :name, :phone, :animal_type_pref, :breed_type_pref, :id
+  attr_reader :name, :animal_type_pref, :breed_type_pref, :id
 
   def initialize(attributes)
     @name = attributes[:name]
-    @phone = attributes[:phone]
     @animal_type_pref = attributes[:animal_type_pref]
     @breed_type_pref = attributes[:breed_type_pref]
     @id = attributes[:id]
