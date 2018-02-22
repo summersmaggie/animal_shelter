@@ -1,0 +1,20 @@
+<h3>Customer Directory</h3>
+
+<% if @customers.any?() %>
+  <h4>Here are all the customers looking for a pet:</h4>
+
+  <ul>
+    <% @customers.each() do |customer| %>
+      <li><a href="/customers/<%= customer.id()%>"><%= customer.name() %></a> </li>
+    <% end %>
+  </ul>
+
+<% else %>
+
+      <p>There are no customers yet!</p>
+
+<% end %>
+
+<div class="container">
+  <a href="/">Return Home</a>
+</div>

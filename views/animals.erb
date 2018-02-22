@@ -4,7 +4,7 @@
   <h4>Here are all the animals up for adoption:</h4>
 
   <ul>
-    <% @animals.each() do |animals| %>
+    <% @animals.each() do |animal| %>
       <li><a href="/animals/<%= animal.id()%>"><%= animal.name() %></a> </li>
     <% end %>
   </ul>

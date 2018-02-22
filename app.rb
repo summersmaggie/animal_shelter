@@ -12,12 +12,35 @@ get('/') do
   erb(:home)
 end
 
+get('/customer/new') do
+  erb(:customer_form)
+end
+
+get('/customers') do
+  @customers = Customer.all()
+  erb(:customers)
+end
+
+post('/customers') do
+  name = params.fetch("name")
+  animal_type_pref = params.fetch("animal_type_pref")
+  breed_type_pref = params.fetch("breed_type_pref")
+  customer = Customer.new({:name => name, :animal_type_pref => animal_type_pref, :breed_type_pref => breed_type_pref})
+  customer.save()
+  erb(:customer_success)
+end
+
+get('/customers/:id') do
+  @customer = Customer.find(params.fetch("id").to_i)
+  erb(:customer)
+end
+
 get('/animal/new') do
   erb(:animal_form)
 end
 
 get('/animals') do
-  @animals = Doctor.all()
+  @animals = Animal.all()
   erb(:animals)
 end
 
@@ -26,15 +49,7 @@ post('/animals') do
   gender = params.fetch("gender")
   type = params.fetch("type")
   breed = params.fetch("breed")
-  owner_id = params.fetch("owner_id").to_i()
-
-  @customer = Customer.find(owner_id)
-  @animal = Animal.new({:name => name, :gender => gender, :type => type, :breed => breed, :owner_id => owner_id, :id => nil})
+  @animal = Animal.new({:name => name, :gender => gender, :type => type, :breed => breed})
   @animal.save()
-
-  erb(:animals)
-end
-
-get('/customer/new') do
-  erb(:customer_form)
+  erb(:animal_success)
 end

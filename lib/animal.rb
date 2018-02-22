@@ -1,5 +1,5 @@
 class Animal
-  attr_reader :name, :gender, :type, :breed, :id, :owner_id
+  attr_accessor :name, :gender, :type, :breed, :id
 
   def initialize(attributes)
       @name = attributes[:name]
@@ -7,7 +7,6 @@ class Animal
       @type = attributes[:type]
       @breed = attributes[:breed]
       @id = attributes[:id]
-      @owner_id = attributes[:owner_id]
     end
 
   def self.all
@@ -19,14 +18,13 @@ class Animal
       type = animal.fetch("type")
       breed = animal.fetch("breed")
       id = animal.fetch("id").to_i()
-      owner_id = animal.fetch("owner_id").to_i()
-      animals.push(Animal.new({:name => name, :gender => gender, :type => type, :breed => breed, :id => id, :owner_id => owner_id}))
+      animals.push(Animal.new({:name => name, :gender => gender, :type => type, :breed => breed, :id => id}))
     end
     animals
   end
 
   def save
-    result = DB.exec("INSERT INTO animal (name, gender, type, breed, owner_id) VALUES ('#{@name}', '#{@gender}', '#{@type}', '#{@breed}', #{@owner_id}) RETURNING id;")
+    result = DB.exec("INSERT INTO animal (name, gender, type, breed) VALUES ('#{@name}', '#{@gender}', '#{@type}', '#{@breed}') RETURNING id;")
     @id = result.first().fetch("id").to_i()
   end
 
@@ -43,4 +41,5 @@ class Animal
     end
     found_animal
   end
+
 end

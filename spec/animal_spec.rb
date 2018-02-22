@@ -40,4 +40,5 @@ describe(Animal) do
       expect(Animal.find(animal2.id())).to(eq(animal2))
     end
   end
+
 end

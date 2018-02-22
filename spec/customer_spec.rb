@@ -40,4 +40,16 @@ describe(Customer) do
       expect(Customer.find(customer2.id())).to(eq(customer2))
     end
   end
+
+  describe("#adoption") do
+    it("returns an array of animals per customer") do
+      test_customer = Customer.new({:name => "Maggie", :phone => '6302531865', :animal_type_pref => "dog", :breed_type_pref => "chihuahua", :id => nil})
+      test_customer.save()
+      animal1 = Animal.new({:name => "Nugget", :gender => "Male", :type => "dog", :breed => "chihuahua", :id => nil, :owner_id => 0})
+      animal1.save()
+      animal2 = Animal.new({:name => "Faye", :gender => "Female", :type => "dog", :breed => "border collie", :id => nil, :owner_id => 0})
+      animal2.save()
+      expect(test_customer.adoption()).to(eq([animal1, animal2]))
+    end
+  end
 end

@@ -1,5 +1,5 @@
 class Customer
-  attr_reader :name, :animal_type_pref, :breed_type_pref, :id
+  attr_accessor :name, :animal_type_pref, :breed_type_pref, :id
 
   def initialize(attributes)
     @name = attributes[:name]
@@ -10,21 +10,20 @@ class Customer
 
   def self.all
     customers = []
-    returned_customers = DB.exec("SELECT * FROM owner;")
+    returned_customers = DB.exec("SELECT * FROM customer;")
     returned_customers.each() do |customer|
       name = customer.fetch("name")
-      phone = customer.fetch("phone")
       animal_type_pref = customer.fetch("animal_type_pref")
       breed_type_pref = customer.fetch("breed_type_pref")
       id = customer.fetch("id").to_i()
 
-      customers.push(Customer.new({:name => name, :phone => phone, :animal_type_pref => animal_type_pref, :breed_type_pref => breed_type_pref, :id => id}))
+      customers.push(Customer.new({:name => name, :animal_type_pref => animal_type_pref, :breed_type_pref => breed_type_pref, :id => id}))
     end
     customers
   end
 
   def save
-    result = DB.exec("INSERT INTO owner (name, phone, animal_type_pref, breed_type_pref) VALUES ('#{@name}', '#{@phone}', '#{@animal_type_pref}', '#{@breed_type_pref}') RETURNING id;")
+    result = DB.exec("INSERT INTO customer (name, animal_type_pref, breed_type_pref) VALUES ('#{@name}', '#{@animal_type_pref}', '#{@breed_type_pref}') RETURNING id;")
     @id = result.first().fetch("id").to_i()
   end
 
@@ -40,5 +39,19 @@ class Customer
       end
     end
     found_customer
+  end
+
+  def adoption
+    customer_animals = []
+    animals = DB.exec("SELECT * FROM animal WHERE customer.id = #{self.id()};")
+    binding.pry
+    animals.each() do |animal|
+      name = animals.fetch("name")
+      gender = animal.fetch("gender")
+      type = animal.fetch("type")
+      breed = animal.fetch("breed")
+      customer_animals.push(Animal.new({:name => name, :gender => gender, :type => type, :breed => breed}))
+    end
+    customer_animals
   end
 end
